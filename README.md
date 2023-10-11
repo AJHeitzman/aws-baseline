@@ -21,7 +21,8 @@ The following resources get created:
 * Security Groups
 
 ## IP Addressing Considerations and Requirements
-You will need to determine what CIDR block you want to use for the VPC. Try to think ahead and leave a cushion for any potential future growth.
+> [!important]  
+> You will need to determine what ```CIDR``` block you want to use for the VPC. Try to think ahead and leave a cushion for any potential future growth.
 
 > [!warning]  
 > You **CANNOT** update the CIDR on the ```VPC``` or a ```Subnet``` once created! To modify an existing subnet you would have to detroy and recreate it, which means any resources built with that subnet would also need to be destroy and rebuilt.
