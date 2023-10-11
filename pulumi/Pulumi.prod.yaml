@@ -1,0 +1,13 @@
+config:
+  AWS-Baseline:vpc:
+    cidr_block: 10.0.0.0/16
+    enable_dns_hostnames: True
+    subnets:
+      database:
+        security_group:
+      private:
+        security_group:
+      public:
+        security_group:
+  aws:profile: pulumi_admin
+  aws:region: us-east-1

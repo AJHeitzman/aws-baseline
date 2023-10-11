@@ -1,0 +1,6 @@
+name: AWS-Baseline
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: Provisions a baseline VPC environment in AWS.
