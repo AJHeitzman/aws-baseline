@@ -23,12 +23,8 @@ The following resources get created:
 ## IP Addressing Considerations and Requirements
 You will need to determine what CIDR block you want to use for the VPC. Try to think ahead and leave a cushion for any potential future growth.
 
-> [!important]  
-> This is important
-
-|:warning: **WARNING** |
-|----|
-| You CAN'T update the CIDR on the ```VPC``` or ```Subnet``` once it has been created! |
+> [!warning]  
+> You CAN'T update the CIDR on the ```VPC``` or ```Subnet``` once it has been created!
 
 | CIDR | Subnet Mask | IP Addresses |
 |--|--|--|
