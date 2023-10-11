@@ -3,14 +3,8 @@
 ![AWS-CLI](https://img.shields.io/badge/AWS_CLI-2.13.5-informational?logo=Amazon&logoColor=orange)
 ![Visual_Studio_Code](https://img.shields.io/badge/Visual_Studio_Code-1.83.0-informational?logo=VisualStudioCode)
 
-<center>
-
-![AWS|50](./assets/images/aws_logo.png)
-
-</center>
-
 # AWS Baseline
-Provisions a standard baseline VPC with a typical subnet setup. 
+This is a [Pulumi](www.pulumi.com) Python project used to provisions a baseline VPC with a typical subnet setup.
 
 The following resources get created:
 * VPC

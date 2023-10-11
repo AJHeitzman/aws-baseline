@@ -6,6 +6,7 @@ import json
 import os
 import platform
 import pulumi_aws as aws
+from ipaddress import IPv4Network
 from common.autotag import register_auto_tags
 
 """
@@ -47,8 +48,8 @@ Create VPC
 vpc_name = f"{environment}VPC"
 vpc = aws.ec2.Vpc(
         vpc_name,
-        cidr_block = config.require_object("vpc.cidr_block"),
-        enable_dns_hostnames=config.require_object("vpc.enable_dns_hostnames"),
+        cidr_block = config.require_object("vpc").get("cidr_block"),
+        enable_dns_hostnames=config.require_object("vpc").get("enable_dns_hostnames"),
         tags = {"Name": vpc_name}
     )
 
@@ -65,6 +66,8 @@ igw = aws.ec2.InternetGateway(
 """
 Create Subnets
 """
+print(IPv4Network(config.require_object("vpc").get("cidr_block")).subnets)
+
 
 """
 Create NAT Gateways
