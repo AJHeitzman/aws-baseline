@@ -24,7 +24,7 @@ The following resources get created:
 You will need to determine what CIDR block you want to use for the VPC. Try to think ahead and leave a cushion for any potential future growth.
 
 > [!warning]  
-> You CAN'T update the CIDR on the ```VPC``` or ```Subnet``` once it has been created!
+> You **CANNOT** update the CIDR on the ```VPC``` or a ```Subnet``` once created! To modify an existing subnet you would have to detroy and recreate it, which means any resources built with that subnet would also need to be destroy and rebuilt.
 
 | CIDR | Subnet Mask | IP Addresses |
 |--|--|--|
