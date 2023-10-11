@@ -23,8 +23,8 @@ The following resources get created:
 ## IP Addressing Considerations and Requirements
 You will need to determine what CIDR block you want to use for the VPC. Try to think ahead and leave a cushion for any potential future growth.
 
-[!IMPORTANT]  
-This is important
+> [!important]  
+> This is important
 
 |:warning: **WARNING** |
 |----|
