@@ -8,6 +8,7 @@ import platform
 import pulumi_aws as aws
 from ipaddress import IPv4Network
 from common.autotag import register_auto_tags
+from common.subnets import Subnets
 
 """
 Grab Config
@@ -45,7 +46,7 @@ register_auto_tags({
 """
 Create VPC
 """
-vpc_name = f"{environment}VPC"
+vpc_name = f"{environment}-vpc"
 vpc = aws.ec2.Vpc(
         vpc_name,
         cidr_block = config.require_object("vpc").get("cidr_block"),
@@ -66,8 +67,7 @@ igw = aws.ec2.InternetGateway(
 """
 Create Subnets
 """
-print(IPv4Network(config.require_object("vpc").get("cidr_block")).subnets)
-
+subnets = Subnets(environment, vpc).create()
 
 """
 Create NAT Gateways

@@ -1,8 +1,25 @@
 config:
   AWS-Baseline:vpc:
-    cidr_block: 10.0.0.0/16
+    cidr_block: 10.0.0.0/19
     enable_dns_hostnames: True
     subnets:
-      number_of_availability_zones_to_use: 3
+      database:
+        abbreviation: db
+        cidr_blocks:
+          - 10.0.0.0/23
+          - 10.0.2.0/23
+          - 10.0.4.0/23
+      private:
+        abbreviation: pri
+        cidr_blocks:
+          - 10.0.6.0/23
+          - 10.0.8.0/23
+          - 10.0.10.0/23
+      public:
+        abbreviation: pub
+        cidr_blocks:
+          - 10.0.12.0/23
+          - 10.0.14.0/23
+          - 10.0.16.0/23
   aws:profile: pulumi_admin
   aws:region: us-east-1
