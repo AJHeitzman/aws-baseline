@@ -46,10 +46,9 @@ Once you have figured out your ```cidr_block``` for the ```VPC``` you will need 
 > You **CANNOT** update the CIDR on the ```VPC``` or a ```Subnet``` once created! To modify an existing subnet you would have to detroy and recreate it, which means any resources built within that subnet would also need to be destroy and rebuilt.
 
 ## EIP (Elastic IP)
+By default this project will provision 3 ```eip``` addresses, one for each of the ```nat gateways``` _(one nat gateway per az)_.
 > [!important]  
 By default your account is allowed to create 5 ```eip``` addresses. If you plan on using more than 5 ```availability zones``` and you also plan on deploying a ```nat gateway``` for resources in the private subnets to reach the internet, then you will need to request an increase in the number of ```eip``` addresses allowed. This increase can be requested in the web console and usually takes 15-30 minutes for it to get approved, large requests will take longer and require contacting someone at AWS.
-
-
 
 ## Understanding the Config
 Some notes on the stacks config layout.....
