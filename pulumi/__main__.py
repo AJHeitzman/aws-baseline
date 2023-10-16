@@ -9,6 +9,7 @@ import pulumi_aws as aws
 from ipaddress import IPv4Network
 from common.autotag import register_auto_tags
 from common.subnets import Subnets
+from common.nat_gateways import NATGateways
 
 """
 Grab Config
@@ -67,11 +68,17 @@ igw = aws.ec2.InternetGateway(
 """
 Create Subnets
 """
-subnets = Subnets(environment, vpc).create()
+subnets, availability_zones_that_need_nat_gateways = Subnets(environment, vpc).create()
 
 """
 Create NAT Gateways
 """
+#- Create a NAT Gateway for each AZ that contains private (The private and database subnets in the config) 
+# subnets that require access to the internet. Return a dictionary containing the ngw name and id.
+
+nat_gateways = NATGateways(availability_zones_that_need_nat_gateways, environment, subnets).create()
+#print(availability_zones_that_need_nat_gateways)
+print(nat_gateways)
 
 """
 Create Route Tables

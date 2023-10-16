@@ -14,6 +14,15 @@ The following resources get created:
 * Route Tables
 * Security Groups
 
+## Multiple AWS Account Setup
+This project will easily support a multiple AWS account deployment. Simply change aws profile in the stacks config to one that is configured to use the account you wish to deploy resources to.
+
+```yaml
+config:
+  ...
+  aws:profile: <aws_profile_name_here>
+```
+
 ## IP Addressing Considerations and Requirements
 I find it easiest to work my way backwards on this.
 1. Determine how many ```Availability Zones``` you want to be spread across.
@@ -44,6 +53,9 @@ Once you have figured out your ```cidr_block``` for the ```VPC``` you will need 
 
 > [!warning]  
 > You **CANNOT** update the CIDR on the ```VPC``` or a ```Subnet``` once created! To modify an existing subnet you would have to detroy and recreate it, which means any resources built within that subnet would also need to be destroy and rebuilt.
+
+> [!important]  
+If all of your private subnets require a ```nat gateway``` for internet access, then you must have the same number of public subnets getting created. The ```nat gateway``` gets created in the ```public subnet``` for each ```availability zone``` that will have a private subnet requiring internet access. So if you have 3 ```cidr_blocks``` configured for the ```private``` subnet, that means this IaC will create a subnet in availability zones a, b, and c. So that means you can't have less than 3 ```cidr_blocks``` configured for the ```public``` subnet in the stacks config. Having any less than the same number of private subnets will result in not enough ```nat gateways``` getting created thus leaving you without internet access to one or more of you private subnets.
 
 ## EIP (Elastic IP)
 By default this project will provision 3 ```eip``` addresses, one for each of the ```nat gateways``` _(one nat gateway per az)_.

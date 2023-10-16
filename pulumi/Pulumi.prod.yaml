@@ -9,17 +9,44 @@ config:
           - 10.0.0.0/23
           - 10.0.2.0/23
           - 10.0.4.0/23
+        routes:
+          0.0.0.0/0:
+            description: internet access
+            target: ngw
+          1.1.1.1/24:
+            description: test
+            target: igw
+        security_group:
+          description: The baseline security group for all resources that get created in the database designated subnets.
       private:
         abbreviation: pri
         cidr_blocks:
           - 10.0.6.0/23
           - 10.0.8.0/23
           - 10.0.10.0/23
+        routes:
+          0.0.0.0/0:
+            description: internet access
+            target: ngw
+        security_group:
+          description: The baseline security group for all resources that get created in the private designated subnets.
+          ingresses:
+            external ssh access:
+              description: SSH access from the internet.
+              from_port: 22
+              to_port: 22
+              protocol: tcp
+              subnets:
+              - 0.0.0.0/0
       public:
         abbreviation: pub
         cidr_blocks:
           - 10.0.12.0/23
           - 10.0.14.0/23
           - 10.0.16.0/23
+        routes:
+          0.0.0.0/0:
+            description: internet access
+            target: igw
   aws:profile: pulumi_admin
   aws:region: us-east-1
