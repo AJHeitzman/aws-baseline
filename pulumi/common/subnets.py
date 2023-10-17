@@ -93,7 +93,6 @@ class Subnets():
                                 tags = {'Name': subnet_name}
                 )
                 
-                #created_subnets.append(created_subnet)
                 created_subnets.append({"name": subnet_name, "availability_zone": az, "subnet_id": created_subnet.id})
             
             """
@@ -102,7 +101,6 @@ class Subnets():
             {'database': [{'name': 'prod-db-subnet-use1a', 'availability_zone': 'us-east-1a', 'subnet_id': <pulumi.output.Output object at 0x000001994F2AB850>}, {'name': 'prod-db-subnet-use1b', 'availability_zone': 'us-east-1b', 'subnet_id': <pulumi.output.Output object at 0x000001994F2D9990>}, {'name': 'prod-db-subnet-use1c', 'availability_zone': 'us-east-1c', 'subnet_id': <pulumi.output.Output object at 0x000001994F2DBB50>}], 'private': [{'name': 'prod-pri-subnet-use1a', 'availability_zone': 'us-east-1a', 'subnet_id': <pulumi.output.Output object at 0x000001994F2F1C50>}, {'name': 'prod-pri-subnet-use1b', 'availability_zone': 'us-east-1b', 'subnet_id': <pulumi.output.Output object at 0x000001994F304DD0>}, {'name': 'prod-pri-subnet-use1c', 'availability_zone': 'us-east-1c', 'subnet_id': <pulumi.output.Output object at 0x000001994F3079D0>}], 'public': [{'name': 'prod-pub-subnet-use1a', 'availability_zone': 'us-east-1a', 'subnet_id': <pulumi.output.Output object at 0x000001994F325D90>}, {'name': 'prod-pub-subnet-use1b', 'availability_zone': 'us-east-1b', 'subnet_id': <pulumi.output.Output object at 0x000001994F334450>}, {'name': 'prod-pub-subnet-use1c', 'availability_zone': 'us-east-1c', 'subnet_id': <pulumi.output.Output object at 0x000001994F336810>}]}
             """
             
-            #all_created_subnets.append({'subnet_type': subnet, 'subnets': created_subnets})
             all_created_subnets.update({subnet: created_subnets })
                 
         return all_created_subnets, availability_zones_that_need_nat_gateways

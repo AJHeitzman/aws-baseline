@@ -36,7 +36,7 @@ class NATGateways():
             if subnet["availability_zone"] in availability_zones_that_need_nat_gateways:
                 #print(subnet["subnet_id"])
                 ngw_subnets.update({subnet["availability_zone"]: subnet["subnet_id"]})
-                print(ngw_subnets)
+                #print(ngw_subnets)
         return ngw_subnets
         
     def create(self):
@@ -46,8 +46,9 @@ class NATGateways():
         
         #- An empty dictionary that will contain the created nat gateways. This gets returned to main and passed
         # to the RouteTables class to create the necessary route tables.
-        ngws = {}
+        ngws = []
         
+        #- Get the public subnets that the NGW's will get created in.
         ngw_subnets = self.determine_subnets_for_ngws(subnets, availability_zones_that_need_nat_gateways)
         
         for subnet in ngw_subnets:
@@ -63,7 +64,7 @@ class NATGateways():
                                         tags = { "Name": f"{ngw_name}-eip"}
                                         ).id))
             
-            #- Append the NGW to the ngws dictionary
-            ngws.update({ngw_name: nat_gateway})
+            #- Append a dictionary containing details about the nat_gateway to the ngws list.
+            ngws.append({"name": ngw_name, "availability_zone": subnet, "ngw_id": nat_gateway.id })
             
         return ngws

@@ -2,6 +2,10 @@ config:
   AWS-Baseline:vpc:
     cidr_block: 10.0.0.0/19
     enable_dns_hostnames: True
+    flow_logs:
+      enabled: True
+      traffic_type: ALL # Accepts values: ALL, REJECT, or ACCEPT
+      retention_in_days: 1
     subnets:
       database:
         abbreviation: db
@@ -13,11 +17,15 @@ config:
           0.0.0.0/0:
             description: internet access
             target: ngw
-          1.1.1.1/24:
-            description: test
-            target: igw
-        security_group:
-          description: The baseline security group for all resources that get created in the database designated subnets.
+        baseline_security_group:
+          ingresses: None
+          egresses:
+            all outgoing:
+              cidr_blocks:
+              - 0.0.0.0/0
+              from_port: 0
+              protocol: "-1"
+              to_port: 0              
       private:
         abbreviation: pri
         cidr_blocks:
@@ -28,16 +36,21 @@ config:
           0.0.0.0/0:
             description: internet access
             target: ngw
-        security_group:
-          description: The baseline security group for all resources that get created in the private designated subnets.
+        baseline_security_group:
           ingresses:
-            external ssh access:
-              description: SSH access from the internet.
+            ssh access:
               from_port: 22
               to_port: 22
               protocol: tcp
               subnets:
+              - vpc
+          egresses:
+            all outgoing:
+              cidr_blocks:
               - 0.0.0.0/0
+              from_port: 0
+              protocol: "-1"
+              to_port: 0
       public:
         abbreviation: pub
         cidr_blocks:
@@ -48,5 +61,14 @@ config:
           0.0.0.0/0:
             description: internet access
             target: igw
+        baseline_security_group:
+          ingresses: None
+          egresses:
+            all outgoing:
+              cidr_blocks:
+              - 0.0.0.0/0
+              from_port: 0
+              protocol: "-1"
+              to_port: 0          
   aws:profile: pulumi_admin
   aws:region: us-east-1

@@ -8,8 +8,11 @@ import platform
 import pulumi_aws as aws
 from ipaddress import IPv4Network
 from common.autotag import register_auto_tags
+from common.vpc import VPC
 from common.subnets import Subnets
 from common.nat_gateways import NATGateways
+from common.route_tables import RouteTables
+from common.security_groups import SecurityGroups
 
 """
 Grab Config
@@ -47,13 +50,8 @@ register_auto_tags({
 """
 Create VPC
 """
-vpc_name = f"{environment}-vpc"
-vpc = aws.ec2.Vpc(
-        vpc_name,
-        cidr_block = config.require_object("vpc").get("cidr_block"),
-        enable_dns_hostnames=config.require_object("vpc").get("enable_dns_hostnames"),
-        tags = {"Name": vpc_name}
-    )
+# Creates the VPC and Flow Log resources if enabled.
+vpc = VPC(environment).create()
 
 """
 Create Internet Gateway
@@ -68,6 +66,8 @@ igw = aws.ec2.InternetGateway(
 """
 Create Subnets
 """
+#- Create subnets. Will return a dictionary of subnet_groups the subnets created for each. 
+# It will also return a list of availability zones that require a NAT Gateway.
 subnets, availability_zones_that_need_nat_gateways = Subnets(environment, vpc).create()
 
 """
@@ -75,18 +75,20 @@ Create NAT Gateways
 """
 #- Create a NAT Gateway for each AZ that contains private (The private and database subnets in the config) 
 # subnets that require access to the internet. Return a dictionary containing the ngw name and id.
-
 nat_gateways = NATGateways(availability_zones_that_need_nat_gateways, environment, subnets).create()
-#print(availability_zones_that_need_nat_gateways)
-print(nat_gateways)
 
 """
 Create Route Tables
 """
+#- Create the route tables adding routes to the appropriate NGW or IGW and then associate with the appropriate subnet(s).
+route_tables = RouteTables(environment, igw, nat_gateways, subnets, vpc).create()
 
 """
 Create Security Groups
 """
+# Creates the baseline security groups for each subnet group. These security groups would be the first to get applied
+# to any resources created in the respective subnet.
+security_groups = SecurityGroups(environment, subnets, vpc).create()
 
 """
 Create Export for README.md
